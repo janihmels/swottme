@@ -13,7 +13,6 @@ import chineseflag from './media/chineseflag.png';
 import clip from './media/clip.mp4';
 // --------------------------------------------------------------
 import { iDidNotKnow } from '../../redux/items/actions';
-
 // --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +56,12 @@ const styles = StyleSheet.create({
 
 
 class WrongResult extends Component {
-  
+
+  constructor(props) {
+    super(props); 
+    this.state={hasLoaded: false};
+  }  
+
   nextItem = () => {
     this.props.iDidNotKnow();
     this.props.navigation.navigate('DoYouKnow');
@@ -75,9 +79,23 @@ class WrongResult extends Component {
         <WrongBar />
         <View style={{backgroundColor: '#fff', marginTop: 8, marginBottom: 8,
           alignItems: 'center', justifyContent: 'center'}}>
-          <Video source={
-            {uri: 'https://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4'}
-          } style={{width: 320, height: 240}} />
+          <Video 
+            source={
+              {uri: 'https://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4'}
+            } 
+            style={{width: 320, height: 240}} 
+            onLoad={()=>{this.setState({hasLoaded: true})}}
+            repeat={true}
+          />
+          {
+            this.state.hasLoaded ? 
+              null : (
+                <Text style={{fontSize: 38, position: 'absolute', top:30, left: 30, right:0}}>
+                  Loading clip...
+                </Text>
+              )
+          }
+    
         </View>
 
         <View style={styles.textItem} >

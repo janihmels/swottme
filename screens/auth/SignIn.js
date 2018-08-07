@@ -3,6 +3,7 @@ import {
   Text, View, Image, StyleSheet, 
   TextInput, Alert 
 } from 'react-native';
+
 import md5 from "md5";
 // -------------------------------------------
 import Button from "../../components/Button";
