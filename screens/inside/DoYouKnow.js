@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // --------------------------------------------------------------
 import { iKnew, iDidNotKnow } from "../../redux/items/actions";
+import { navigate } from "../../redux/navigate/actions";
 // --------------------------------------------------------------
 import Button from "../../components/Button";
-import LeaderBar from "./LeaderBar";
-import StatusBar from "./StatusBar";
 // -----------------------------------------------------------------------------
 import britishflag from './media/britishflag.png';
 // --------------------------------------------------------------
@@ -38,17 +37,21 @@ const styles = StyleSheet.create({
 });
 
 
+
 class DoYouKnow extends Component {
 
   iKnew = () => {
-    this.props.navigation.navigate('PickTheAnswer');
+    const { soco } = this.props.tunes;
+    console.log(soco);
+    soco.makepick.play();
+    this.props.navigate('picktheanswer');
   }
 
   iDidNotKnow = () => {
+    this.props.navigate('wrongresult');
     this.props.iDidNotKnow();
     const { soco } = this.props.tunes;
     soco.incorrect.play();
-    this.props.navigation.navigate('WrongResult');
   }
 
   render() {
@@ -56,8 +59,7 @@ class DoYouKnow extends Component {
     if(currentItem===null) return null;
     
     return (
-      <View style={{flex:1, backgroundColor: '#fff', paddingTop: 58, paddingBottom: 58, alignItems: 'center', justifyContent: 'center'}}>
-        <LeaderBar />
+      <Fragment>
         <Text style={{fontSize:18}}>Do you remember ?</Text>
         <Text style={{fontSize:11, marginTop: 8}}>(Be honest, this is to assist your learning...)</Text>
 
@@ -73,17 +75,16 @@ class DoYouKnow extends Component {
           <Button type="tiny" content = "Yes" onPress={ this.iKnew }/>
           <Button type="tiny" content = "No"  onPress={ this.iDidNotKnow }/>
         </View>
-
-        <StatusBar />
-      </View>
+      </Fragment>
     );
   }
 }
 
+
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ iKnew, iDidNotKnow },dispatch);
+  return bindActionCreators({ iKnew, iDidNotKnow, navigate },dispatch);
 }
 function mapStateToProps(state) {
   return {

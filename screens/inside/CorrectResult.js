@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // --------------------------------------------------------------
 import Button from "../../components/Button";
-import LeaderBar from "./LeaderBar";
-import StatusBar from "./StatusBar";
 // -----------------------------------------------------------------------------
 import pandabear from './media/pandabear.png';
 import britishflag from './media/britishflag.png';
 import chineseflag from './media/chineseflag.png';
 // -----------------------------------------------------------------------------
 import { successNext } from '../../redux/items/actions';
-
+import { navigate } from "../../redux/navigate/actions";
 // --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
@@ -60,11 +58,14 @@ class CorrectResult extends Component {
   nextItem = () => {
     //this.props.successNext();
     const { items } = this.props.items;
-    if(items.length) this.props.navigation.navigate('DoYouKnow');
-    else {
-      const { soco } = this.props.tunes;
+    const { soco } = this.props.tunes;
+
+    if(items.length) {
+      soco.request.play();
+      this.props.navigate('doyouknow');
+    } else {
       soco.gong.play();
-      this.props.navigation.navigate('RewardScreen');
+      this.props.navigate('rewardscreen');
     }
   }
 
@@ -75,8 +76,7 @@ class CorrectResult extends Component {
     if(previousItem===null) return null;
 
     return (
-      <View style={{flex:1, backgroundColor: '#fff', paddingTop: 58, paddingBottom: 58, alignItems: 'center', justifyContent: 'center'}}>
-        <LeaderBar />
+      <Fragment>
         <CorrectBar />
         <View style={{backgroundColor: '#fff', marginTop: 38, marginBottom: 38,
           alignItems: 'center', justifyContent: 'center'}}>
@@ -104,16 +104,14 @@ class CorrectResult extends Component {
             onPress={ this.nextItem }
           />
         </View>
-
-        <StatusBar />
-      </View>
+      </Fragment>
     );
   }
 }
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ successNext },dispatch);
+  return bindActionCreators({ successNext, navigate },dispatch);
 }
 function mapStateToProps(state) {
   return {

@@ -1,18 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { PlaySound, StopSound, PlaySoundRepeat, PlaySoundMusicVolume } from 'react-native-play-sound';
-
 // --------------------------------------------------------------
 import Button from "../../components/Button";
-import LeaderBar from "./LeaderBar";
-import StatusBar from "./StatusBar";
 // -----------------------------------------------------------------------------
 import rewardpic from './media/rewardpic.png';
 // -----------------------------------------------------------------------------
-import { restartGame } from '../../redux/items/actions';
-
+import { initItems } from '../../redux/items/actions';
+import { navigate } from "../../redux/navigate/actions";
 // --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
@@ -58,8 +54,7 @@ class RewardScreen extends Component {
 
 
   pressStart = () => {
-    this.props.restartGame(this.props.navigation.navigate);
-    //this.props.navigation.navigate('Start');
+    this.props.initItems();
   }
 
 
@@ -68,10 +63,8 @@ class RewardScreen extends Component {
     const { previousItem } = this.props.items;
 
     return (
-      <View style={{flex:1, backgroundColor: '#fff', paddingTop: 58, paddingBottom: 58, alignItems: 'center', justifyContent: 'center'}}>
-        <LeaderBar />
 
-
+      <Fragment>
         <Text style={{fontSize:38, color: '#333', marginTop: 18, marginLeft: 8, marginRight: 8, textAlign: 'center'}}>
           Congratulations- you completed the mission!
         </Text>
@@ -92,15 +85,15 @@ class RewardScreen extends Component {
             onPress={ this.pressStart }
           />
         </View>
+      </Fragment>
 
-      </View>
     );
   }
 }
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ restartGame },dispatch);
+  return bindActionCreators({ initItems, navigate },dispatch);
 }
 function mapStateToProps(state) {
   return {

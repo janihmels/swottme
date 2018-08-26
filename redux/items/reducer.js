@@ -1,23 +1,10 @@
-const initItems = [
-  {english: 'BRING, TAKE (TO SOMEWHERE)', chinese: 'DAI' },
-  {english: 'THIS', chinese: 'ZHE'},
-//    {english: 'PLEASE TAKE ME TO HERE (SHOWS ADDRESS WRITTEN OUT)', chinese: 'QING DAI WO DAO ZHE LI'},
-//    {english: 'ASK', chinese: 'WEN'},
-//   {english: 'MAY I ASK', chinese: 'QING WEN'},
-//    {english: 'WRITE', chinese: 'XIE'}
-];
-
 const initialState = {
-  items:initItems,
+  items:null,
   currentItem: null, previousItem: null,
-  pool: [
-    'QING DAI WO DAO ZHE LI',
-    'ZHE',
-    'QING WEN',
-    'XIE'
-  ],
-  fullAmount: 9,
-  completedAmount: 3
+  pool: null,
+  fullAmount: null,
+  remainingAmount: null,
+  logoPlayed: false
 }
 
 // -------------------------------------------------------
@@ -27,15 +14,26 @@ export default function( state = initialState, action ) {
 
     // -------------------------------------------------------
     case 'INIT_ITEMS':
-      var items = [...initItems];
+      var { items, pool } = action;
+      if(items===null) return initialState;
       return {
-        ...state, items,
+        ...state, items, pool,
         currentItem: items[0],
         fullAmount: items.length,
-        completedAmount: items.length
+        remainingAmount: items.length,
+        logoPlayed: false
       };
     break;
-
+    // -------------------------------------------------------
+      case 'RESET_ITEMS':
+        return initialState;
+      break;
+    // -------------------------------------------------------
+    case 'LOGO_PLAYED':
+      return {
+        ...state, logoPlayed: true
+      };
+    break;
     // -------------------------------------------------------
     case 'SUCCESS_NEXT':
 
@@ -45,7 +43,7 @@ export default function( state = initialState, action ) {
       return {
         ...state,
         items, currentItem,
-        completedAmount: items.length
+        remainingAmount: items.length
       };
     break;
     // -------------------------------------------------------
@@ -58,7 +56,7 @@ export default function( state = initialState, action ) {
       return {
         ...state,
         items, currentItem, previousItem,
-        completedAmount: items.length
+        remainingAmount: items.length
       };
     break;
     // -------------------------------------------------------
@@ -72,7 +70,7 @@ export default function( state = initialState, action ) {
       return {
         ...state,
         items, currentItem, previousItem,
-        completedAmount: items.length
+        remainingAmount: items.length
       };
     break;
   // -------------------------------------------------------
@@ -86,7 +84,7 @@ export default function( state = initialState, action ) {
       return {
         ...state,
         items, currentItem,
-        completedAmount: items.length
+        remainingAmount: items.length
       };
     break;
   

@@ -1,12 +1,38 @@
+import backend from "../../system/backend";
+import { navigate } from "../../redux/navigate/actions";
 
 // ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-export const initItems = () => {
-    return {
-      type: "INIT_ITEMS",
-    };
+export const initItems = () => dispatch => {
+  const initItems = [
+    {english: 'BRING, TAKE (TO SOMEWHERE)', chinese: 'nǐ ​hǎo' },
+    {english: 'THIS', chinese: 'ZHE'},
+  ];
+  dispatch({
+    type: "RESET_ITEMS"
+  });
+
+  backend('vocab','getTen', {}).then( data => {
+    if(data.data) {
+      dispatch({
+        type: "INIT_ITEMS",
+        items: data.data.ten,
+        pool: data.data.pool
+      });  
+    }
+  });
+  
+  dispatch(navigate('start')); 
+
 };
 
+// ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------
+export const logoPlayed = () => {
+  return {
+    type: "LOGO_PLAYED"
+  }
+}
 
 // ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------

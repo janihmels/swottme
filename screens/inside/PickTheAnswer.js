@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import shuffle from "lodash.shuffle";
 // --------------------------------------------------------------
 import { iKnew, iDidNotKnow } from "../../redux/items/actions";
+import { navigate } from "../../redux/navigate/actions";
 // --------------------------------------------------------------
 import Button from "../../components/Button";
-import LeaderBar from "./LeaderBar";
-import StatusBar from "./StatusBar";
 // -----------------------------------------------------------------------------
 import britishflag from './media/britishflag.png';
 
@@ -45,21 +45,30 @@ class PickTheAnswer extends Component {
     const { soco } = this.props.tunes;
     soco.correct.play();
     this.props.iKnew();
-    console.log("Navigating to CorrectResult");
-    this.props.navigation.navigate('CorrectResult');
+    this.props.navigate('correctresult');
   }
 
   iDidNotKnow = () => {
-
+    const { soco } = this.props.tunes;
+    soco.incorrect.play();
+    this.props.iDidNotKnow();
+    this.props.navigate('wrongresult');
   }
 
   render() {
     const { currentItem, pool  } = this.props.items;
     if(currentItem===null) return null;
 
+    let minipool = shuffle(
+      [ 
+        ...shuffle(pool).slice(0,3).map( x => ({...x, isCorrect:false})), 
+        {chinese: currentItem.chinese, isCorrect: true}
+      ]
+    );
+    
     return (
-      <View style={{flex:1, backgroundColor: '#fff', paddingTop: 58, paddingBottom: 58, alignItems: 'stretch', justifyContent: 'center'}}>
-        <LeaderBar />
+
+      <Fragment>
         <Text style={{textAlign: 'center', fontSize: 18}}>Do you remember ?</Text>
         <View style={{backgroundColor: '#fff', marginTop: 38, marginBottom: 38,
           alignItems: 'center', justifyContent: 'center'}}>
@@ -69,21 +78,20 @@ class PickTheAnswer extends Component {
           {currentItem.english}
         </Text>
 
-        <View style={{flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center'}} >
+        <View style={{flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', width: '80%'}} >
           {
-            pool.map( 
-              (string,index) => 
+            minipool.map( 
+              (item, index) => 
               <Answer 
                 key={`answer-key-${index}`} 
-                content={string} 
-                onPress={ this.iKnew }
+                content={item.chinese}
+                onPress={ item.isCorrect ? this.iKnew : this.iDidNotKnow }
               />
             )
           }
         </View>
+      </Fragment>
 
-        <StatusBar />
-      </View>
     );
   }
 }
@@ -103,7 +111,7 @@ class Answer extends Component {
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ iKnew, iDidNotKnow },dispatch);
+  return bindActionCreators({ iKnew, iDidNotKnow, navigate },dispatch);
 }
 function mapStateToProps(state) {
   return {

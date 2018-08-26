@@ -20,10 +20,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 38, width:330, color: '#efefef',
-    borderTopColor: '#960303', 
-    borderLeftColor: '#960303', borderRightColor: '#960303',
-    borderColor: 'gray', borderWidth: 1,
-    marginTop: 8,
+    marginTop: 4,
     marginBottom: 33,
     fontSize: 18
   },
@@ -106,7 +103,7 @@ export default class SignUp extends Component {
             placeholderTextColor="#ccc"
             value={this.state.first}
             onChangeText={this.changeFirst}
-            autoFocus={true}
+            underlineColorAndroid='gray'
           />
           <TextInput
             style={styles.input}
@@ -114,6 +111,7 @@ export default class SignUp extends Component {
             placeholderTextColor="#ccc"
             value={this.state.last}
             onChangeText={this.changeLast}
+            underlineColorAndroid='gray'
           />
           <TextInput
             style={styles.input}
@@ -123,6 +121,7 @@ export default class SignUp extends Component {
             onChangeText={this.changePhone}
             keyboardType="phone-pad"
             textContentType="telephoneNumber"
+            underlineColorAndroid='gray'
           />
           <TextInput
             style={styles.input}
@@ -133,6 +132,7 @@ export default class SignUp extends Component {
             autoCapitalize='none'
             keyboardType="email-address"
             textContentType="emailAddress"
+            underlineColorAndroid='gray'
           />
           <TextInput
             style={styles.input}
@@ -141,6 +141,7 @@ export default class SignUp extends Component {
             secureTextEntry={true}
             value={this.state.password}
             onChangeText={this.changePassword}
+            underlineColorAndroid='gray'
           />
           <Button 
               content = {

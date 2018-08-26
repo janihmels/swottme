@@ -1,6 +1,6 @@
 
 const initialState = {
-  soco: null
+  current: 'start'
 }
 
 // -------------------------------------------------------
@@ -9,12 +9,10 @@ export default function( state = initialState, action ) {
   switch(action.type) {
 
     // -------------------------------------------------------
-    case 'INIT_TUNES':
+    case 'NAVIGATE':
       return {
-        soco: {
-          ...state.soco,
-          [action.tune] : action.thisTune
-        }
+        ...state, 
+        current: action.current
       };
     break;
 

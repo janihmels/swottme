@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  Text, View, StyleSheet, TouchableHighlight
+  Text, View, StyleSheet, TouchableOpacity
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 export default class Button extends Component {
     render() {
         return (
-          <TouchableHighlight
+          <TouchableOpacity
             onPress={this.props.onPress}
             style={{marginTop: 18}}
           >
@@ -42,7 +42,7 @@ export default class Button extends Component {
                 {this.props.content}
               </Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         );
     }
 }

@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Video from "react-native-video";
 // --------------------------------------------------------------
 import Button from "../../components/Button";
-import LeaderBar from "./LeaderBar";
-import StatusBar from "./StatusBar";
 // -----------------------------------------------------------------------------
 import britishflag from './media/britishflag.png';
 import chineseflag from './media/chineseflag.png';
-import clip from './media/clip.mp4';
 // --------------------------------------------------------------
 import { iDidNotKnow } from '../../redux/items/actions';
+import { navigate } from "../../redux/navigate/actions";
 // --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
@@ -63,8 +61,9 @@ class WrongResult extends Component {
   }  
 
   nextItem = () => {
-    this.props.iDidNotKnow();
-    this.props.navigation.navigate('DoYouKnow');
+    const { soco } = this.props.tunes;
+    soco.request.play();
+    this.props.navigate('doyouknow');
   }
 
 
@@ -74,16 +73,18 @@ class WrongResult extends Component {
     if(previousItem===null) return null;
 
     return (
-      <View style={{flex:1, backgroundColor: '#fff', paddingTop: 58, paddingBottom: 58, alignItems: 'center', justifyContent: 'center'}}>
-        <LeaderBar />
+      <Fragment>
         <WrongBar />
-        <View style={{backgroundColor: '#fff', marginTop: 8, marginBottom: 8,
+        <View style={{backgroundColor: '#fff', width: '100%', marginTop: 8, marginBottom: 8,
           alignItems: 'center', justifyContent: 'center'}}>
           <Video 
             source={
-              {uri: 'https://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4'}
+                //{ uri: 'https://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4' }
+                //{ uri: 'https://storage.googleapis.com/swottme/Mp4s/Eleven-shi_yi.mp4' }
+                //{ uri: 'https://storage.googleapis.com/swottme/Mp4s/ELDER_SISTER(jie_jie)_rev.mp4' }
+                { uri: `https://storage.googleapis.com/swottme/Mp4s/${previousItem.clip}` }
             } 
-            style={{width: 320, height: 240}} 
+            style={{width: '90%', height: 240}} 
             onLoad={()=>{this.setState({hasLoaded: true})}}
             repeat={true}
           />
@@ -119,21 +120,21 @@ class WrongResult extends Component {
             onPress={ this.nextItem }
           />
         </View>
+      </Fragment>
 
-        <StatusBar />
-      </View>
     );
   }
 }
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ iDidNotKnow },dispatch);
+  return bindActionCreators({ iDidNotKnow, navigate },dispatch);
 }
 function mapStateToProps(state) {
   return {
     authenticate: state.authenticate,
-    items: state.items
+    items: state.items,
+    tunes: state.tunes
   };
 }
 export default connect(mapStateToProps,mapDispatchToProps)(WrongResult);

@@ -8,10 +8,13 @@ import { initTunes } from "./redux/tunes/actions";
 // -------------------------------------------------------------
 import reducers from './reducers';
 // -------------------------------------------------------------
-import MainApp from "./MainApp";
+import MainApp from "./screens/inside/MainApp";
+import Start from "./screens/inside/Start";
 import AuthApp from "./AuthApp";
 
 
+
+// -------------------------------------------------------------
 const store = createStore(reducers, applyMiddleware(thunk));
 store.dispatch(initTunes());
 
@@ -22,7 +25,7 @@ const MainSwitch =  createSwitchNavigator(
     MainApp: { screen: MainApp }
   },
   { 
-    initialRouteName: 'MainApp'
+    initialRouteName: 'AuthApp'
   }
 );
 

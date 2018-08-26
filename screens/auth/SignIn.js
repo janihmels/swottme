@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { 
-  Text, View, Image, StyleSheet, 
-  TextInput, Alert 
+  View, Text, TextInput, Image, 
+  StyleSheet, AsyncStorage, Alert 
 } from 'react-native';
-
 import md5 from "md5";
 // -------------------------------------------
 import Button from "../../components/Button";
 // -------------------------------------------
-import backend from "../../system/backend";
-// -------------------------------------------
-import logo from './media/newdragonlogo.png';
+import { initItems } from "../../redux/items/actions";
+import logo from "./media/dragonlogosmall.png";
 
 // -------------------------------------------
 // -------------------------------------------
@@ -22,10 +22,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   },
   input: {
-    height: 38, width:330, color: '#efefef',
-    borderTopColor: '#960303', 
-    borderLeftColor: '#960303', borderRightColor: '#960303',
-    borderColor: 'gray', borderWidth: 1,
+    height: 50, width:330, color: '#efefef',
     marginTop: 8,
     marginBottom: 33,
     fontSize: 18
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
 // -------------------------------------------
 // -------------------------------------------
 
-export default class SignIn extends Component {
+class SignIn extends Component {
 
   constructor(props) {
     super(props);
@@ -49,7 +46,12 @@ export default class SignIn extends Component {
       connecting: false,
       message: ''
     };
+    AsyncStorage.getItem('userid', (err, userid) => {
+      if(err) console.log("Err is", err);
+      if(userid!=null) this.signIn(userid);
+    });
   }
+
   changeEmail = email => {
     this.setState({email});
   }
@@ -57,8 +59,14 @@ export default class SignIn extends Component {
     this.setState({password});
   }
 
+  signIn = userid => {
+    console.log("Signing In", userid);
+    this.props.initItems(userid);
+    this.props.navigation.navigate('MainApp');
+  }
+
   onSubmit = () => {
-    /*if(this.state.email && this.state.password) {
+    if(this.state.email && this.state.password) {
       this.setState({connecting:true});
       let { email, password } = this.state;
       email = email.toLowerCase();
@@ -73,11 +81,15 @@ export default class SignIn extends Component {
             this.setState({connecting: false});
             return;
           }
-          this.props.navigation.navigate('InstaTutor');
+          const userid = res.data._id;
+          console.log("Sign In Data", res.data, userid);
+          AsyncStorage.setItem('userid', userid, () => {
+            console.log("Data written");
+            this.signIn(userid);
+          });
         }
       );
-    }*/
-    this.props.navigation.navigate('Start');
+    }
   }
 
 
@@ -89,7 +101,7 @@ export default class SignIn extends Component {
           <Image source={logo} />
         </View>
         <View style={{
-          flex: 3, backgroundColor: '#960303',
+          flex: 9, backgroundColor: '#960303',
           alignItems: 'center', justifyContent: 'center'}}
         >
           <TextInput
@@ -99,7 +111,7 @@ export default class SignIn extends Component {
             value={this.state.email}
             onChangeText={this.changeEmail}
             autoCapitalize='none'
-            autoFocus={true}
+            underlineColorAndroid='gray'
           />
           <TextInput
             style={styles.input}
@@ -108,6 +120,7 @@ export default class SignIn extends Component {
             secureTextEntry={true}
             value={this.state.password}
             onChangeText={this.changePassword}
+            underlineColorAndroid='gray'
           />
           <Button 
               content = {
@@ -140,3 +153,17 @@ export default class SignIn extends Component {
     );
   }
 }
+
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ initItems },dispatch);
+}
+function mapStateToProps(state) {
+  return {
+    authenticate: state.authenticate,
+    items: state.items,
+    tunes: state.tunes
+  };
+}
+export default connect(mapStateToProps,mapDispatchToProps)(SignIn);

@@ -27,6 +27,7 @@
 		1AF723232117989A00A0DEEB /* correct.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7231F2117989A00A0DEEB /* correct.mp3 */; };
 		1AF723242117989A00A0DEEB /* request.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1AF723202117989A00A0DEEB /* request.mp3 */; };
 		1AF723252117989A00A0DEEB /* incorrect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1AF723212117989A00A0DEEB /* incorrect.mp3 */; };
+		1AFEFCD92128D32A007CE594 /* makepick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1AFEFCD82128D32A007CE594 /* makepick.mp3 */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -378,6 +379,7 @@
 		1AF7231F2117989A00A0DEEB /* correct.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = correct.mp3; sourceTree = "<group>"; };
 		1AF723202117989A00A0DEEB /* request.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = request.mp3; sourceTree = "<group>"; };
 		1AF723212117989A00A0DEEB /* incorrect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = incorrect.mp3; sourceTree = "<group>"; };
+		1AFEFCD82128D32A007CE594 /* makepick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = makepick.mp3; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* rnapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rnapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* rnapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "rnapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -532,6 +534,7 @@
 		13B07FAE1A68108700A75B9A /* rnapp */ = {
 			isa = PBXGroup;
 			children = (
+				1AFEFCD82128D32A007CE594 /* makepick.mp3 */,
 				1AF7231F2117989A00A0DEEB /* correct.mp3 */,
 				1AF722F62117989A00A0DEEB /* gong.mp3 */,
 				1AF723212117989A00A0DEEB /* incorrect.mp3 */,
@@ -1189,6 +1192,7 @@
 				1AF723252117989A00A0DEEB /* incorrect.mp3 in Resources */,
 				1AF723242117989A00A0DEEB /* request.mp3 in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				1AFEFCD92128D32A007CE594 /* makepick.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
