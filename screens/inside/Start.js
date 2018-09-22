@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Button from "../../components/Button";
 // --------------------------------------------------------------
 import { initItems, logoPlayed } from "../../redux/items/actions";
-import { navigate } from "../../redux/navigate/actions";
+import { navigate } from "../../redux/steer/actions";
 // -----------------------------------------------------------------------------
 import logo from './media/dragonlogosmall.png';
 
@@ -44,22 +44,25 @@ const styles = StyleSheet.create({
   }
 });
 
-
+// --------------------------------------------------------------
+// --------------------------------------------------------------
 class Start extends Component {
   
+  // --------------------------------------------------------------
   componentWillReceiveProps(prevProps) {
     const { soco } = this.props.tunes;
-    console.log("Will receive props", this.props.items.logoPlayed)
     if(soco&&!this.props.items.logoPlayed) {
-      soco.chinese_logo_with_gong.play();
-      this.props.logoPlayed();
+      if(soco.chinese_logo_with_gong) {
+        soco.chinese_logo_with_gong.play();
+        this.props.logoPlayed();  
+      }
     }
   }
-
-
+  
+  // --------------------------------------------------------------
   render() {
     const { soco } = this.props.tunes;
-    const { items } = this.props.items;
+    const { items, stats } = this.props.items;
 
     return (
       <Fragment>
@@ -79,14 +82,14 @@ class Start extends Component {
 
                 <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}} >
                   <View style={styles.ball}>
-                    <Text style={styles.ballText}>38</Text>
+                    <Text style={styles.ballText}>{stats.seen}</Text>
                   </View>
                   <Text>Cards Attempted</Text>
                 </View>
 
                 <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}} >
                   <View style={styles.ball}>
-                    <Text style={styles.ballText}>93</Text>
+                    <Text style={styles.ballText}>{stats.mastered}</Text>
                   </View>
                   <Text>Cards Mastered</Text>
                 </View>

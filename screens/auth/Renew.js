@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { 
-  Text, View, Image, StyleSheet, 
-  TextInput, TouchableHighlight
+  Text, View, Image, 
+  StyleSheet, TextInput, Alert
 } from 'react-native';
+import md5 from "md5";
+// --------------------------------------------------------------
+
 import Button from "../../components/Button";
 import logo from './media/dragonlogosmall.png';
+
+// --------------------------------------------------------------
+// --------------------------------------------------------------
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +22,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   },
   input: {
-    height: 38, width:330, color: '#efefef',
-    borderTopColor: '#960303', 
-    borderLeftColor: '#960303', borderRightColor: '#960303',
-    borderColor: 'gray', borderWidth: 1,
+    height: 50, width:330, color: '#efefef',
     marginTop: 8,
     marginBottom: 33,
     fontSize: 18
@@ -29,24 +34,42 @@ const styles = StyleSheet.create({
 
 });
 
-export default class Renew extends Component {
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+class Renew extends Component {
   constructor(props) {
     super(props);
     this.state={ 
-      email: '', password: '',
+      password: '', repeatPassword: '',
       connecting: false
     };
   }
-  changeEmail = email => {
-    this.setState({email});
-  }
+
   changePassword = password => {
     this.setState({password});
   }
 
+  changeRepeatPassword = repeatPassword => {
+    this.setState({repeatPassword});
+  }
+
   onSubmit = () => {
-    this.setState({connecting:true});
-    this.props.navigation.navigate('InstaTutor');
+    if(
+      this.state.password && 
+      ( this.state.password === this.state.repeatPassword )
+    ) {
+      const password = md5(this.state.password);
+      const { email } = this.props.authenticate;
+      backend('users','updatepass', {password, email})
+      .then(
+        () => {
+          this.props.navigation.navigate('SignIn');
+          Alert.alert("Password has been updated.");
+        }
+      )
+      return;
+    }
+    Alert.alert("The two passwords must match.");
   }
 
 
@@ -63,19 +86,23 @@ export default class Renew extends Component {
         >
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="New Password"
             placeholderTextColor="#ccc"
             secureTextEntry={true}
             value={this.state.password}
             onChangeText={this.changePassword}
+            underlineColorAndroid='gray'
+            autoCapitalize='none'
           />
         <TextInput
             style={styles.input}
-            placeholder="Repeat Password"
+            placeholder="Repeat New Password"
             placeholderTextColor="#ccc"
             secureTextEntry={true}
-            value={this.state.password}
-            onChangeText={this.repeatPassword}
+            value={this.state.repeatpassword}
+            onChangeText={this.changeRepeatPassword}
+            underlineColorAndroid='gray'
+            autoCapitalize='none'
           />
 
           <Button 
@@ -98,3 +125,14 @@ export default class Renew extends Component {
     );
   }
 }
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({  },dispatch);
+}
+function mapStateToProps(state) {
+  return {
+    authenticate: state.authenticate
+  };
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Renew);

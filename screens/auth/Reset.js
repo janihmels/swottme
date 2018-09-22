@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { 
   Text, View, Image, StyleSheet, 
   TextInput, TouchableHighlight
 } from 'react-native';
+// -------------------------------------------
+import { getSecurityCode } from "../../redux/authenticate/actions";
+// -------------------------------------------
 import Button from "../../components/Button";
 import logo from './media/dragonlogosmall.png';
 
+// --------------------------------------------------------------
+// --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
       flex: 1,
@@ -14,10 +21,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   },
   input: {
-    height: 38, width:330, color: '#efefef',
-    borderTopColor: '#960303', 
-    borderLeftColor: '#960303', borderRightColor: '#960303',
-    borderColor: 'gray', borderWidth: 1,
+    height: 50, width:330, color: '#efefef',
     marginTop: 8,
     marginBottom: 33,
     fontSize: 18
@@ -29,7 +33,9 @@ const styles = StyleSheet.create({
 
 });
 
-export default class Reset extends Component {
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+class Reset extends Component {
   constructor(props) {
     super(props);
     this.state={ 
@@ -45,8 +51,14 @@ export default class Reset extends Component {
   }
 
   onSubmit = () => {
-    this.setState({connecting:true});
-    this.props.navigation.navigate('Enter');
+    if(this.state.email) {
+      this.setState({connecting:true});
+      this.props.getSecurityCode(
+        this.state.email,
+        this.props.navigation.navigate
+      );
+      this.props.navigation.navigate('Enter');  
+    }
   }
 
 
@@ -63,11 +75,11 @@ export default class Reset extends Component {
         >
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Email"
             placeholderTextColor="#ccc"
-            secureTextEntry={true}
-            value={this.state.password}
-            onChangeText={this.changePassword}
+            value={this.state.email}
+            onChangeText={this.changeEmail}
+            underlineColorAndroid='gray'
           />
           <Button 
               content = {
@@ -89,3 +101,14 @@ export default class Reset extends Component {
     );
   }
 }
+// --------------------------------------------------------------
+// --------------------------------------------------------------
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ getSecurityCode },dispatch);
+}
+function mapStateToProps(state) {
+  return {
+    authenticate: state.authenticate
+  };
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Reset);

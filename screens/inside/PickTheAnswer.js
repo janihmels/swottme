@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import shuffle from "lodash.shuffle";
 // --------------------------------------------------------------
 import { iKnew, iDidNotKnow } from "../../redux/items/actions";
-import { navigate } from "../../redux/navigate/actions";
+import { navigate } from "../../redux/steer/actions";
 // --------------------------------------------------------------
 import Button from "../../components/Button";
 // -----------------------------------------------------------------------------
@@ -43,15 +43,17 @@ class PickTheAnswer extends Component {
 
   iKnew = () => {
     const { soco } = this.props.tunes;
+    const { currentItem } = this.props.items;
     soco.correct.play();
-    this.props.iKnew();
+    this.props.iKnew(currentItem._id, 5);
     this.props.navigate('correctresult');
   }
 
   iDidNotKnow = () => {
     const { soco } = this.props.tunes;
+    const { currentItem } = this.props.items;
     soco.incorrect.play();
-    this.props.iDidNotKnow();
+    this.props.iDidNotKnow(currentItem._id, 2);
     this.props.navigate('wrongresult');
   }
 

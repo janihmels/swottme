@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
-  View, Text, TextInput, Image, 
+  View, Text, TextInput, Image, KeyboardAvoidingView,
   StyleSheet, AsyncStorage, Alert 
 } from 'react-native';
 import md5 from "md5";
 // -------------------------------------------
 import Button from "../../components/Button";
 // -------------------------------------------
+import { signIn } from "../../redux/authenticate/actions";
 import { initItems } from "../../redux/items/actions";
-import logo from "./media/dragonlogosmall.png";
+import logo from "./media/newdragonlogo.png";
 
 // -------------------------------------------
 // -------------------------------------------
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50, width:330, color: '#efefef',
     marginTop: 8,
-    marginBottom: 33,
+    marginBottom: 18,
     fontSize: 18
   },
   highlightView: {
@@ -42,7 +43,7 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state={ 
-      email: 'jan@lingua.ly', password: '',
+      email: '', password: '',
       connecting: false,
       message: ''
     };
@@ -61,6 +62,7 @@ class SignIn extends Component {
 
   signIn = userid => {
     console.log("Signing In", userid);
+    this.props.signIn(userid);
     this.props.initItems(userid);
     this.props.navigation.navigate('MainApp');
   }
@@ -83,10 +85,14 @@ class SignIn extends Component {
           }
           const userid = res.data._id;
           console.log("Sign In Data", res.data, userid);
-          AsyncStorage.setItem('userid', userid, () => {
-            console.log("Data written");
-            this.signIn(userid);
-          });
+          const a = AsyncStorage.setItem('userid', userid, err => {
+            console.log("Err is", err);
+          }).then(
+            () => {
+              this.signIn(userid);
+            }
+          );
+
         }
       );
     }
@@ -96,22 +102,22 @@ class SignIn extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <View style={{flex: 2, backgroundColor: '#fff',
+        <View style={{flex: 3, backgroundColor: '#fff',
           alignItems: 'center', justifyContent: 'center'}}>
           <Image source={logo} />
         </View>
         <View style={{
-          flex: 9, backgroundColor: '#960303',
+          flex: 5, backgroundColor: '#960303',
           alignItems: 'center', justifyContent: 'center'}}
         >
           <TextInput
-            style={styles.input}
+            style={{...styles.input, marginTop:38}}
             placeholder="Email"
             placeholderTextColor="#ccc"
             value={this.state.email}
             onChangeText={this.changeEmail}
-            autoCapitalize='none'
             underlineColorAndroid='gray'
+            autoCapitalize='none'
           />
           <TextInput
             style={styles.input}
@@ -121,6 +127,7 @@ class SignIn extends Component {
             value={this.state.password}
             onChangeText={this.changePassword}
             underlineColorAndroid='gray'
+            autoCapitalize='none'
           />
           <Button 
               content = {
@@ -136,13 +143,13 @@ class SignIn extends Component {
               {this.state.message}
           </Text>
           <Text 
-            style={{marginTop:18, color:'white'}}
+            style={{marginTop:8, color:'white'}}
             onPress = {() => {this.props.navigation.navigate('SignUp')}}
           >
             No account yet? Sign up here
           </Text>
           <Text 
-            style={{marginTop:18, color:'white'}}
+            style={{marginTop:8, color:'white'}}
             onPress = {() => {this.props.navigation.navigate('Reset')}}
           >
             Reset your password
@@ -157,7 +164,7 @@ class SignIn extends Component {
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ initItems },dispatch);
+  return bindActionCreators({ initItems, signIn },dispatch);
 }
 function mapStateToProps(state) {
   return {

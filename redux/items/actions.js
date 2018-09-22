@@ -1,9 +1,9 @@
 import backend from "../../system/backend";
-import { navigate } from "../../redux/navigate/actions";
+import { navigate } from "../../redux/steer/actions";
 
 // ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-export const initItems = () => dispatch => {
+export const initItems = learnerid => dispatch => {
   const initItems = [
     {english: 'BRING, TAKE (TO SOMEWHERE)', chinese: 'nǐ ​hǎo' },
     {english: 'THIS', chinese: 'ZHE'},
@@ -12,12 +12,13 @@ export const initItems = () => dispatch => {
     type: "RESET_ITEMS"
   });
 
-  backend('vocab','getTen', {}).then( data => {
+  backend('vocab','getTen', { learnerid }).then( data => {
     if(data.data) {
       dispatch({
         type: "INIT_ITEMS",
         items: data.data.ten,
-        pool: data.data.pool
+        pool: data.data.pool,
+        stats: data.data.stats
       });  
     }
   });
@@ -34,27 +35,21 @@ export const logoPlayed = () => {
   }
 }
 
-// ---------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------
-export const reportScore = ( score ) => {
-    return {
-      type: "REPORT_SCORE",
-      score
-    };
-};
 
 // --------------------------------------------------------------
-export const iKnew = () => {
-    return {
+export const iKnew = (vid, score) => dispatch => {
+    backend('vocab','report', { vid, score });
+    dispatch({
       type: "I_KNEW"
-    };
+    });
 }
 
 // --------------------------------------------------------------
-export const iDidNotKnow = () => {
-  return {
+export const iDidNotKnow = (vid, score) => dispatch => {
+  backend('vocab','report', { vid, score });
+  dispatch({
     type: "I_DID_NOT_KNOW"
-  }
+  }); 
 }
 
 // --------------------------------------------------------------

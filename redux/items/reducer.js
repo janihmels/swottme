@@ -2,6 +2,7 @@ const initialState = {
   items:null,
   currentItem: null, previousItem: null,
   pool: null,
+  stats: null,
   fullAmount: null,
   remainingAmount: null,
   logoPlayed: false
@@ -14,10 +15,10 @@ export default function( state = initialState, action ) {
 
     // -------------------------------------------------------
     case 'INIT_ITEMS':
-      var { items, pool } = action;
+      var { items, pool, stats } = action;
       if(items===null) return initialState;
       return {
-        ...state, items, pool,
+        ...state, items, pool, stats,
         currentItem: items[0],
         fullAmount: items.length,
         remainingAmount: items.length,
@@ -73,8 +74,8 @@ export default function( state = initialState, action ) {
         remainingAmount: items.length
       };
     break;
-  // -------------------------------------------------------
-    case 'FAILURE_NEXT':
+    // -------------------------------------------------------
+    /*case 'FAILURE_NEXT':
       
       var items = [...state.items];      
       var currentItem = items.shift();
@@ -86,15 +87,8 @@ export default function( state = initialState, action ) {
         items, currentItem,
         remainingAmount: items.length
       };
-    break;
+    break;*/
   
-    // -------------------------------------------------------
-    case 'REPORT_SCORE':
-      return {
-        ...state
-      };
-      break;
-
     // -------------------------------------------------------
     default:
       return state;

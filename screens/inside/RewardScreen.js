@@ -8,7 +8,7 @@ import Button from "../../components/Button";
 import rewardpic from './media/rewardpic.png';
 // -----------------------------------------------------------------------------
 import { initItems } from '../../redux/items/actions';
-import { navigate } from "../../redux/navigate/actions";
+import { navigate } from "../../redux/steer/actions";
 // --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +54,8 @@ class RewardScreen extends Component {
 
 
   pressStart = () => {
-    this.props.initItems();
+    const { learnerid } = this.props.authenticate;
+    this.props.initItems(learnerid);
   }
 
 

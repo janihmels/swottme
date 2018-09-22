@@ -10,7 +10,7 @@ import britishflag from './media/britishflag.png';
 import chineseflag from './media/chineseflag.png';
 // -----------------------------------------------------------------------------
 import { successNext } from '../../redux/items/actions';
-import { navigate } from "../../redux/navigate/actions";
+import { navigate } from "../../redux/steer/actions";
 // --------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {

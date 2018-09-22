@@ -12,8 +12,6 @@ import RewardScreen from "./RewardScreen";
 // -------------------------------------------------------------
 import LeaderBar from "./LeaderBar";
 import StatusBar from "./StatusBar";
-// --------------------------------------------------------------
-import { initItems, logoPlayed } from "../../redux/items/actions";
 // -----------------------------------------------------------------------------
 
 
@@ -22,7 +20,7 @@ class MainApp extends Component {
   
 
   render() {
-    const { current } = this.props.navigate;
+    const { current } = this.props.steer;
 
     const inserts = {
       start: <Start />,
@@ -47,14 +45,14 @@ class MainApp extends Component {
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ initItems, logoPlayed },dispatch);
+  return bindActionCreators({ },dispatch);
 }
 function mapStateToProps(state) {
   return {
     authenticate: state.authenticate,
     items: state.items,
     tunes: state.tunes,
-    navigate: state.navigate
+    steer: state.steer
   };
 }
 export default connect(mapStateToProps,mapDispatchToProps)(MainApp);

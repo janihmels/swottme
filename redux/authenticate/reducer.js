@@ -1,5 +1,7 @@
 const initialState = {
-  user: null
+  userid: null, 
+  code: null, 
+  email: null
 }
 
 // -------------------------------------------------------
@@ -10,7 +12,17 @@ export default function( state = initialState, action ) {
     // -------------------------------------------------------
     case 'SIGN_IN':
       return {
-        ...state
+        ...state,
+        learnerid: action.learnerid
+      };
+    break;
+
+    // -------------------------------------------------------
+    case 'SET_CODE':
+      return {
+        ...state,
+        code: action.code, 
+        email: action.email
       };
     break;
 

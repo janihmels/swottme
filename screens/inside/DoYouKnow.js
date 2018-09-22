@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // --------------------------------------------------------------
 import { iKnew, iDidNotKnow } from "../../redux/items/actions";
-import { navigate } from "../../redux/navigate/actions";
+import { navigate } from "../../redux/steer/actions";
 // --------------------------------------------------------------
 import Button from "../../components/Button";
 // -----------------------------------------------------------------------------
@@ -42,14 +42,16 @@ class DoYouKnow extends Component {
 
   iKnew = () => {
     const { soco } = this.props.tunes;
-    console.log(soco);
     soco.makepick.play();
     this.props.navigate('picktheanswer');
   }
 
   iDidNotKnow = () => {
     this.props.navigate('wrongresult');
-    this.props.iDidNotKnow();
+
+    const { currentItem } = this.props.items;
+    this.props.iDidNotKnow( currentItem._id, 0);
+
     const { soco } = this.props.tunes;
     soco.incorrect.play();
   }

@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   },
   input: {
-    height: 38, width:330, color: '#efefef',
+    height: 40, width:330, color: '#efefef',
     marginTop: 4,
-    marginBottom: 33,
+    marginBottom: 18,
     fontSize: 18
   },
   highlightView: {
@@ -37,8 +37,8 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state={
-      first: 'Jan', last: 'Ihmels', phone: '0505863357',
-      email: '', password: 'testpass',
+      first: '', last: '', phone: '',
+      email: '', password: '',
       connecting: false
     };
   }
@@ -77,8 +77,8 @@ export default class SignUp extends Component {
               }
               Alert.alert('Problem with Sign Up',res.data.err.code);
             }
+            this.props.navigation.navigate('SignIn');  
             Alert.alert("Thank you for registering.");
-            this.props.navigation.navigate('InstaTutor');  
         }
       );
      
@@ -98,7 +98,7 @@ export default class SignUp extends Component {
           alignItems: 'center', justifyContent: 'center'}}
         >
           <TextInput
-            style={styles.input}
+            style={{...styles.input, marginTop: 72}}
             placeholder="First Name"
             placeholderTextColor="#ccc"
             value={this.state.first}
@@ -138,6 +138,7 @@ export default class SignUp extends Component {
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="#ccc"
+            autoCapitalize='none'
             secureTextEntry={true}
             value={this.state.password}
             onChangeText={this.changePassword}
@@ -151,7 +152,7 @@ export default class SignUp extends Component {
               type="small"
           />
           <Text 
-            style={{marginTop:38, color:'white'}}
+            style={{marginTop:18, color:'white'}}
             onPress = {() => {this.props.navigation.navigate('SignIn')}}
           >
             Already have an account? Sign in here.

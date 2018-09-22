@@ -35,7 +35,7 @@ export default class Button extends Component {
         return (
           <TouchableOpacity
             onPress={this.props.onPress}
-            style={{marginTop: 18}}
+            style={{marginTop: 8}}
           >
             <View style={styles[this.props.type]}>
               <Text style={{fontSize: 18}}>

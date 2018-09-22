@@ -1,5 +1,7 @@
 export default backend = (rubric, call, input) => {
-  return fetch(`http://10.0.2.2:8080/${rubric}/${call}`, {
+  const url = 'https://swott-me.appspot.com';
+  //const url = 'http://10.0.2.2:8080';
+  return fetch(`${url}/${rubric}/${call}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

@@ -15,7 +15,8 @@ export default function( state = initialState, action ) {
         current: action.current
       };
     break;
-
+    
+    // -------------------------------------------------------    
     default:
       return state;
   }
