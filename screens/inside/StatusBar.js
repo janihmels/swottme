@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 class StatusBar extends Component {
+
+  // --------------------------------------------------------------
+  signOut = () => {
+    AsyncStorage.removeItem('userid', () => {
+      this.props.navigate('AuthApp');  
+    });
+  }
+
+  // --------------------------------------------------------------
   render() {
     let { remainingAmount, fullAmount } = this.props.items;
     if(remainingAmount === null ) return <BarStrip />;
@@ -22,6 +32,12 @@ class StatusBar extends Component {
           <View style={{margin:0, backgroundColor: '#316097', height:18, width: percentageString}} />
         </View>
         <Text style={{color: '#efefef'}}>Completed: {completedAmount} of {fullAmount}</Text>
+        <TouchableOpacity 
+          style = {{ position: 'absolute', bottom: 8, right: 8 }} 
+          onPress = { this.signOut }
+        >
+          <Image source = { require('../../media/sign-out.png')} />
+        </TouchableOpacity>
       </BarStrip>
     )
   }
